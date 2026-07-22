@@ -16,16 +16,20 @@
 | **anthropics/skills** | Claude 공식 스킬. `canvas-design`, `brand-guidelines`, `pptx`, `docx` — 디자인 스킬 구조/철학 참고 | Apache 2.0 (문서 스킬은 source-available) | https://github.com/anthropics/skills |
 | **travisvn/awesome-claude-skills** | 커뮤니티 Claude 스킬 총망라 (디자인/문서 스킬 발굴용) | — | https://github.com/travisvn/awesome-claude-skills |
 
-**추천 사용법**
-- 가장 강력: **KRDS-MCP를 Claude Desktop에 MCP로 연결** → Claude가 실시간으로 KRDS 토큰을 조회.
+**추천 사용법 — 이미 연결해 두었습니다.**
+- 이 저장소 루트에 [`​.mcp.json`](../.mcp.json)을 커밋해 두었으므로, **Claude Code에서 이 프로젝트를 열면
+  KRDS 서버가 자동 인식**됩니다(최초 1회 서버 신뢰 승인만 하면 됨). 검증: `@krds-mcp/krds-mcp@1.0.7` stdio 정상 기동 확인.
+- **Claude Desktop**을 쓰는 경우엔 아래를 `claude_desktop_config.json`에 붙여넣으세요(동일 설정):
   ```json
-  // claude_desktop_config.json
   {
     "mcpServers": {
       "krds": { "command": "npx", "args": ["-y", "@krds-mcp/krds-mcp"] }
     }
   }
   ```
+  설정 파일 위치 — macOS: `~/Library/Application Support/Claude/claude_desktop_config.json`,
+  Windows: `%APPDATA%\Claude\claude_desktop_config.json`. 붙여넣은 뒤 Claude Desktop 재시작.
+- 전제조건: Node.js 18~21 설치(최초 실행 시 `npx`가 패키지를 내려받음).
 - MCP 없이도: `krds-uiux`의 tokens + 이 저장소 `resources/krds-design-tokens.css`를 첨부.
 
 ---
