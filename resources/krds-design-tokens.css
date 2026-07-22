@@ -1,0 +1,127 @@
+/* =============================================================================
+ * krds-design-tokens.css
+ * 한글 제안서용 "AI 느낌 제거" 디자인 토큰
+ *
+ * ★ 이 파일의 값은 추정치가 아니라, KRDS MCP 서버(@krds-mcp/krds-mcp,
+ *   KRDS 2024 Complete v2.0.0)를 실제 호출해 받아온 정부 표준값이다.
+ *   조회일: 2026-07-22 / 준수기준: WCAG 2.1 AA / 디자인 토큰 350개 기반.
+ *
+ * 목적: Claude가 간격/글자크기/색을 즉흥적으로 "발명"하지 못하도록,
+ *       선택 가능한 유한한 값 집합만 노출한다.
+ *       → 문단 간격 틀어짐 · 도형 좌표 어긋남 · 페이지 드리프트 원천 차단.
+ *
+ * 중요 정정: KRDS는 흔히 오해하는 "8pt 그리드"가 아니라 4px 기반 스케일이다.
+ *           스텝: 4,8,12,16,20,24,28,32,36,40,44,48 ... (20/28/36/44 포함)
+ *           따라서 20px, 28px도 정상 토큰이며, 7px·13px 같은 임의값만 금지한다.
+ *
+ * 폰트(Pretendard GOV)는 사용자가 직접 설치.
+ * ========================================================================== */
+
+:root {
+  /* --- 타이포그래피: 폰트 ------------------------------------------------- */
+  --font-sans: "Pretendard GOV Variable", "Pretendard GOV", "Pretendard",
+    -apple-system, "맑은 고딕", "Malgun Gothic", "Noto Sans KR", sans-serif;
+
+  /* --- 타이포그래피 스케일 (KRDS 실측: 크기 / 굵기 / 행간 / 자간) --------- */
+  /* 아래 조합 외의 임의 크기·행간은 사용하지 않는다. */
+  --fs-display-lg: 40px;  --fw-display-lg: 700; --lh-display-lg: 1.1;  --ls-display-lg: -0.025em; /* 표지 대제목 */
+  --fs-display-md: 36px;  --fw-display-md: 700; --lh-display-md: 1.2;  --ls-display-md: -0.025em; /* 페이지 타이틀 */
+  --fs-h1: 32px;          --fw-h1: 700;         --lh-h1: 1.2;          --ls-h1: 0;                /* 섹션 타이틀 */
+  --fs-h2: 28px;          --fw-h2: 600;         --lh-h2: 1.3;          --ls-h2: 0;                /* 하위 섹션 */
+  --fs-h3: 24px;          --fw-h3: 600;         --lh-h3: 1.4;          --ls-h3: 0;                /* 소제목 */
+  --fs-h4: 20px;          --fw-h4: 600;         --lh-h4: 1.4;          --ls-h4: 0;                /* 카드 제목 */
+  --fs-body-lg: 18px;     --fw-body-lg: 400;    --lh-body-lg: 1.6;     --ls-body-lg: 0;           /* 리드 본문 */
+  --fs-body: 16px;        --fw-body: 400;       --lh-body: 1.6;        --ls-body: 0;              /* 일반 본문 */
+  --fs-small: 14px;       --fw-small: 400;      --lh-small: 1.5;       --ls-small: 0;             /* 보조 텍스트 */
+  --fs-caption: 12px;     --fw-caption: 400;    --lh-caption: 1.4;     --ls-caption: 0.025em;     /* 캡션/출처 */
+
+  /* --- 간격: KRDS 스페이싱 스케일 (4px 기반, 유한 집합) ------------------ */
+  /* 모든 margin/padding/gap은 반드시 아래 값 중 하나. 7px·13px 등 임의값 금지. */
+  --space-0: 0;
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-5: 20px;
+  --space-6: 24px;
+  --space-7: 28px;
+  --space-8: 32px;
+  --space-9: 36px;
+  --space-10: 40px;
+  --space-12: 48px;
+  --space-16: 64px;
+  --space-20: 80px;
+  --space-24: 96px;
+
+  /* 문단 간격: 위계별 "고정". 페이지마다 달라지면 안 됨. */
+  --gap-heading-to-body: var(--space-3);   /* 제목 → 본문 (12px) */
+  --gap-paragraph: var(--space-4);         /* 문단 → 문단 (16px) */
+  --gap-section: var(--space-10);          /* 절 → 절 (40px) */
+  --gap-block: var(--space-6);             /* 블록(표/도형) 위아래 (24px) */
+
+  /* --- 레이아웃: 페이지 여백 (전 페이지 동일값 강제) --------------------- */
+  --page-margin-x: var(--space-16);  /* 좌우 64px */
+  --page-margin-y: var(--space-12);  /* 상하 48px */
+  --grid-columns: 12;
+  --grid-gutter: var(--space-6);     /* 24px */
+  --content-max-width: 1024px;
+
+  /* --- 색상: KRDS 실측 팔레트 (2~3색만 사용, 무지개색 금지) -------------- */
+  --color-primary: #0F4C8C;        /* Government Blue (AAA) */
+  --color-primary-strong: #0B3A6B; /* Government Blue 진하게 */
+  --color-primary-weak: #E7EEF6;   /* Government Blue 배경틴트 */
+  --color-point: #CD2E3A;          /* Korean Red — 강조 1색 (남용 금지) */
+
+  /* 상태색 (필요할 때만) */
+  --color-success: #28A745;
+  --color-warning: #FFC107;
+  --color-error: #DC3545;
+  --color-info: #17A2B8;
+
+  /* 중립(텍스트/배경): 회색은 여기서만 선택 */
+  --color-text: #212529;           /* Gray 900 — 본문/제목 (AAA) */
+  --color-text-sub: #495057;       /* Gray 700 — 보조 텍스트 */
+  --color-text-disabled: #6C757D;  /* Gray 600 */
+  --color-line: #CED4DA;           /* Gray 400 — 구분선/표 테두리 */
+  --color-line-soft: #DEE2E6;      /* Gray 300 */
+  --color-bg: #FFFFFF;
+  --color-bg-soft: #F8F9FA;        /* Gray 100 — 카드/음영 배경 */
+
+  /* --- 도형/다이어그램 규격 (KRDS 실측 border-radius / shadow) ----------- */
+  --radius-sm: 4px;
+  --radius-base: 6px;
+  --radius-md: 8px;
+  --radius-lg: 12px;
+  --radius-xl: 16px;
+  --border-width: 1px;
+  --shadow-xs: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+  --shadow-sm: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
+  --shadow-base: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+  /* 도형 크기/좌표도 스페이싱 스케일에 스냅. 아이콘은 24/32/40px 3종만. */
+  --icon-sm: 24px;
+  --icon-md: 32px;
+  --icon-lg: 40px;
+}
+
+/* --- 기본 적용 예시 (HTML 산출물용) --------------------------------------- */
+body {
+  font-family: var(--font-sans);
+  font-size: var(--fs-body);
+  font-weight: var(--fw-body);
+  line-height: var(--lh-body);
+  letter-spacing: var(--ls-body);
+  color: var(--color-text);
+  background: var(--color-bg);
+}
+h1 { font-size: var(--fs-h1); font-weight: var(--fw-h1); line-height: var(--lh-h1); margin: 0 0 var(--gap-heading-to-body); }
+h2 { font-size: var(--fs-h2); font-weight: var(--fw-h2); line-height: var(--lh-h2); margin: var(--gap-section) 0 var(--gap-heading-to-body); }
+h3 { font-size: var(--fs-h3); font-weight: var(--fw-h3); line-height: var(--lh-h3); margin: var(--gap-block) 0 var(--gap-heading-to-body); }
+p  { margin: 0 0 var(--gap-paragraph); }
+.section { margin-bottom: var(--gap-section); }
+.card {
+  background: var(--color-bg-soft);
+  border: var(--border-width) solid var(--color-line);
+  border-radius: var(--radius-md);
+  padding: var(--space-6);
+  box-shadow: var(--shadow-sm);
+}

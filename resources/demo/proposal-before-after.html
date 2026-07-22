@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<title>제안서 디자인: AI 느낌 vs KRDS 토큰 (실증 비교)</title>
+<style>
+/* KRDS 실측 토큰 (via @krds-mcp v2.0.0, 2026-07-22 조회) */
+:root{
+  --font: "Pretendard GOV","Pretendard","맑은 고딕","Malgun Gothic","Noto Sans KR",sans-serif;
+  --s1:4px; --s2:8px; --s3:12px; --s4:16px; --s5:20px; --s6:24px; --s8:32px; --s10:40px; --s12:48px; --s16:64px;
+  --primary:#0F4C8C; --primary-weak:#E7EEF6; --point:#CD2E3A;
+  --text:#212529; --sub:#495057; --line:#CED4DA; --bg-soft:#F8F9FA; --white:#fff;
+  --radius:8px; --shadow:0 1px 3px 0 rgba(0,0,0,.1),0 1px 2px 0 rgba(0,0,0,.06);
+}
+*{box-sizing:border-box;}
+body{font-family:var(--font);margin:0;background:#e9ecef;color:var(--text);
+  -webkit-font-smoothing:antialiased;padding:32px;}
+.wrap{display:flex;gap:32px;justify-content:center;align-items:flex-start;flex-wrap:wrap;}
+.col{width:520px;}
+.tag{display:inline-block;font-size:13px;font-weight:700;padding:4px 12px;border-radius:999px;margin-bottom:12px;}
+.tag.bad{background:#f8d7da;color:#842029;}
+.tag.good{background:#d1e7dd;color:#0f5132;}
+.caption{font-size:13px;color:#495057;margin:0 0 16px;line-height:1.5;}
+.page{width:520px;height:860px;background:var(--white);overflow:hidden;position:relative;
+  box-shadow:0 8px 24px rgba(0,0,0,.12);border:1px solid #dee2e6;}
+
+/* ============ 공통 콘텐츠 골격 ============ */
+.hd{color:#fff;}
+.brand{font-size:12px;letter-spacing:.05em;opacity:.9;}
+.doctitle{font-weight:700;}
+.sub{font-weight:400;}
+.body p{margin:0;}
+.proc{display:flex;align-items:center;}
+.box{background:var(--primary-weak);border:1px solid var(--primary);border-radius:8px;
+  text-align:center;color:var(--primary);font-weight:600;}
+.arrow{color:var(--primary);font-weight:700;}
+.kpi{display:flex;}
+.kpi .cell{flex:1;text-align:center;}
+.kpi .num{font-weight:700;color:var(--primary);}
+.foot{position:absolute;left:0;right:0;font-size:11px;color:#868e96;border-top:1px solid #dee2e6;}
+
+/* ============================================================
+   BEFORE — 전형적 "AI 느낌" (의도적으로 결함 주입)
+   ============================================================ */
+/* 결함1: 페이지 여백/블록 패딩이 제각각(7·13·22px) → 템플릿 드리프트 */
+/* 결함2: 행간·문단간격 뒤죽박죽(1.25/1.85, 6·17px) → 문단 간격 틀어짐 */
+/* 결함3: 도형 겹침·화살표 어긋남·텍스트 넘침 → 도형 오류 */
+/* 결함4: 무채색 도피 + 무지개 도형색 */
+.bad .hd{background:#6c757d;padding:22px 18px 13px 26px;}         /* 회색 도피, 비대칭 패딩 */
+.bad .brand{opacity:.7;}
+.bad .doctitle{font-size:27px;line-height:1.25;margin:6px 0 3px;letter-spacing:0;}
+.bad .sub{font-size:15px;opacity:.85;}
+.bad .body{padding:13px 18px 0 26px;}                              /* 좌우 여백 불일치(18 vs 26) */
+.bad .body h2{font-size:19px;color:#555;margin:17px 0 4px;line-height:1.2;font-weight:700;}
+.bad .body p{font-size:14px;line-height:1.85;color:#6b6b6b;margin-bottom:7px;}
+.bad .proc{gap:2px;margin:9px 0 0 -4px;}                           /* 음수 마진으로 정렬 깨짐 */
+.bad .box{padding:10px 6px;font-size:12px;}
+.bad .box.b1{width:150px;height:52px;background:#4285F4;color:#fff;border:0;}
+.bad .box.b2{width:150px;height:60px;background:#EA4335;color:#fff;border:0;margin-left:-10px;position:relative;top:6px;} /* 겹침+어긋남 */
+.bad .box.b3{width:150px;height:48px;background:#FBBC04;color:#333;border:0;overflow:hidden;
+  white-space:nowrap;text-overflow:clip;}                          /* 텍스트 넘쳐 잘림 */
+.bad .arrow{margin:0 1px;font-size:12px;color:#adb5bd;position:relative;top:-3px;} /* 앵커 어긋남 */
+.bad .kpi{margin:18px 0 0 0;gap:5px;padding:0 8px;}
+.bad .kpi .cell{background:#f1f3f5;padding:9px 4px;border-radius:5px;}
+.bad .kpi .num{font-size:22px;color:#555;}
+.bad .kpi .lbl{font-size:11px;color:#868e96;line-height:1.2;}
+.bad .foot{bottom:9px;padding:6px 18px 0 30px;}                    /* 꼬리말 좌우 드리프트 */
+
+/* ============================================================
+   AFTER — KRDS 토큰 적용 (규칙 준수)
+   ============================================================ */
+.good .hd{background:var(--primary);padding:var(--s8) var(--s8) var(--s6);}
+.good .doctitle{font-size:28px;line-height:1.3;margin:var(--s2) 0 var(--s1);letter-spacing:0;}
+.good .sub{font-size:16px;opacity:.92;line-height:1.6;}
+.good .body{padding:var(--s8) var(--s8) 0;}                        /* 좌우 동일 32px */
+.good .body h2{font-size:20px;color:var(--primary);margin:var(--s8) 0 var(--s3);
+  line-height:1.4;font-weight:600;padding-left:var(--s3);border-left:4px solid var(--point);}
+.good .body h2:first-child{margin-top:0;}
+.good .body p{font-size:16px;line-height:1.6;color:var(--text);margin-bottom:var(--s4);} /* 통일 */
+.good .proc{gap:var(--s3);margin-top:var(--s5);}
+.good .box{flex:1;height:64px;display:flex;align-items:center;justify-content:center;
+  padding:var(--s3);font-size:14px;}
+.good .arrow{margin:0 var(--s1);font-size:16px;}
+.good .kpi{margin-top:var(--s8);gap:var(--s3);}
+.good .kpi .cell{background:var(--bg-soft);border:1px solid var(--line);
+  border-radius:var(--radius);padding:var(--s5) var(--s3);}
+.good .kpi .num{font-size:28px;line-height:1.2;}
+.good .kpi .lbl{font-size:13px;color:var(--sub);line-height:1.5;margin-top:var(--s1);}
+.good .foot{bottom:var(--s6);padding:var(--s3) var(--s8) 0;}      /* 좌우 동일 32px, 고정 */
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <!-- ================= BEFORE ================= -->
+  <div class="col">
+    <span class="tag bad">✗ Before — AI 느낌</span>
+    <p class="caption">임의 간격(7·13·22px)·뒤섞인 행간·회색 도피·무지개 도형·겹치고 넘치는 프로세스 박스.
+      "뭔가 어긋난" 느낌의 전형.</p>
+    <div class="page bad">
+      <div class="hd">
+        <div class="brand">○○광역시 · 2026 스마트도시 조성사업</div>
+        <div class="doctitle">스마트 교통 통합관제 구축 제안서</div>
+        <div class="sub">시민 체감형 교통 서비스 고도화 방안</div>
+      </div>
+      <div class="body">
+        <h2>1. 사업 개요</h2>
+        <p>본 사업은 도시 교통 데이터를 통합 수집·분석하여 실시간 관제 체계를 구축하는 것을 목표로 한다.</p>
+        <p>기존 분산 시스템을 단일 플랫폼으로 통합하고, 시민에게 예측 정보를 제공한다.</p>
+        <h2>2. 추진 체계</h2>
+        <div class="proc">
+          <div class="box b1">데이터 수집</div>
+          <span class="arrow">▶</span>
+          <div class="box b2">통합 분석 플랫폼</div>
+          <span class="arrow">▶</span>
+          <div class="box b3">실시간 관제·시민제공</div>
+        </div>
+        <div class="kpi">
+          <div class="cell"><div class="num">32%</div><div class="lbl">혼잡 감소</div></div>
+          <div class="cell"><div class="num">1.8M</div><div class="lbl">일 처리 건수</div></div>
+          <div class="cell"><div class="num">99.9%</div><div class="lbl">가동률</div></div>
+        </div>
+      </div>
+      <div class="foot">○○광역시 스마트도시담당관 · 제안서 · 3</div>
+    </div>
+  </div>
+
+  <!-- ================= AFTER ================= -->
+  <div class="col">
+    <span class="tag good">✓ After — KRDS 토큰</span>
+    <p class="caption">Government Blue+Korean Red 2색·행간 1.6 통일·간격 4px 스케일·좌우 여백 고정·
+      균등 정렬된 프로세스 박스. 값을 발명하지 않고 <b>선택</b>한 결과.</p>
+    <div class="page good">
+      <div class="hd">
+        <div class="brand">○○광역시 · 2026 스마트도시 조성사업</div>
+        <div class="doctitle">스마트 교통 통합관제 구축 제안서</div>
+        <div class="sub">시민 체감형 교통 서비스 고도화 방안</div>
+      </div>
+      <div class="body">
+        <h2>1. 사업 개요</h2>
+        <p>본 사업은 도시 교통 데이터를 통합 수집·분석하여 실시간 관제 체계를 구축하는 것을 목표로 한다.</p>
+        <p>기존 분산 시스템을 단일 플랫폼으로 통합하고, 시민에게 예측 정보를 제공한다.</p>
+        <h2>2. 추진 체계</h2>
+        <div class="proc">
+          <div class="box">데이터 수집</div>
+          <span class="arrow">→</span>
+          <div class="box">통합 분석 플랫폼</div>
+          <span class="arrow">→</span>
+          <div class="box">실시간 관제·제공</div>
+        </div>
+        <div class="kpi">
+          <div class="cell"><div class="num">32%</div><div class="lbl">혼잡 감소</div></div>
+          <div class="cell"><div class="num">1.8M</div><div class="lbl">일 처리 건수</div></div>
+          <div class="cell"><div class="num">99.9%</div><div class="lbl">가동률</div></div>
+        </div>
+      </div>
+      <div class="foot">○○광역시 스마트도시담당관 · 제안서 · 3</div>
+    </div>
+  </div>
+
+</div>
+</body>
+</html>

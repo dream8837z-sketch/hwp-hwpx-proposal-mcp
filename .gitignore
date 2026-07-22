@@ -2,3 +2,7 @@
 *.css.map
 *.sass.map
 *.scss.map
+
+# node deps (demo rendering only)
+node_modules/
+package-lock.json
