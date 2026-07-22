@@ -1,0 +1,124 @@
+/* =============================================================================
+ * krds-design-tokens.css
+ * 한글 제안서용 "AI 느낌 제거" 디자인 토큰 (KRDS · 8pt 그리드 기반)
+ *
+ * 목적: Claude가 간격/글자크기/색을 즉흥적으로 "발명"하지 못하도록,
+ *       선택 가능한 유한한 값 집합만 노출한다.
+ *       → 문단 간격 틀어짐 · 도형 좌표 어긋남 · 페이지 드리프트 원천 차단.
+ *
+ * 사용법:
+ *   1) 이 파일을 Claude에 첨부하거나 붙여넣고,
+ *      resources/claude-design-rules.md 규칙과 함께 입력.
+ *   2) HTML/웹 산출물이면 <link>로 연결.
+ *   3) HWPX/슬라이드 산출물이면 아래 값을 "그대로" 사용하도록 지시
+ *      (예: 본문 16px=약 12pt, 줄간격 160%).
+ *
+ * 기준: KRDS(대한민국 정부 디자인 시스템) 스타일 가이드 + 8pt 그리드.
+ *       정확한 최신 수치는 https://v04.krds.go.kr/guide/style/style_03.html 확인.
+ *       폰트(Pretendard GOV)는 사용자가 직접 설치.
+ * ========================================================================== */
+
+:root {
+  /* --- 타이포그래피: 폰트 ------------------------------------------------- */
+  /* Pretendard GOV는 사용자가 직접 설치. 미설치 시 시스템 한글 폰트로 폴백. */
+  --font-sans: "Pretendard GOV Variable", "Pretendard GOV", "Pretendard",
+    -apple-system, "맑은 고딕", "Malgun Gothic", "Noto Sans KR", sans-serif;
+
+  /* --- 타이포그래피: 크기 스케일 (유한 집합, 임의값 금지) ---------------- */
+  /* 이 8단계 외의 폰트 크기는 사용하지 않는다. */
+  --fs-display: 40px;   /* 표지 대제목 */
+  --fs-h1: 28px;        /* 장 제목 */
+  --fs-h2: 24px;        /* 절 제목 */
+  --fs-h3: 20px;        /* 소제목 */
+  --fs-h4: 18px;        /* 강조 본문 */
+  --fs-body: 16px;      /* 본문 기본 */
+  --fs-small: 15px;     /* 캡션/표 안 */
+  --fs-caption: 13px;   /* 각주/출처 */
+
+  /* --- 타이포그래피: 줄간격 (한글 가독성 기준) --------------------------- */
+  /* 한글은 라틴보다 조금 넉넉하게. 본문 160% 권장. */
+  --lh-tight: 1.3;      /* 대제목 */
+  --lh-heading: 1.4;    /* 제목 */
+  --lh-body: 1.6;       /* 본문 (한글 표준) */
+  --lh-loose: 1.7;      /* 긴 문단 */
+
+  /* --- 타이포그래피: 자간 ------------------------------------------------ */
+  --ls-display: -0.02em; /* 큰 제목은 살짝 좁게 */
+  --ls-heading: -0.01em;
+  --ls-body: 0;          /* 본문은 0 고정 (자간 남발 금지) */
+
+  /* --- 간격: 8pt 그리드 스페이싱 스케일 ---------------------------------- */
+  /* 모든 margin/padding/gap은 반드시 아래 값 중 하나. 7px, 10px 같은 즉흥값 금지. */
+  --space-0: 0;
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-5: 24px;
+  --space-6: 32px;
+  --space-7: 40px;
+  --space-8: 48px;
+  --space-9: 64px;
+  --space-10: 80px;
+
+  /* 문단 간격: 위계별로 "고정". 페이지마다 달라지면 안 됨. */
+  --gap-heading-to-body: var(--space-3);   /* 제목 → 본문 */
+  --gap-paragraph: var(--space-4);         /* 문단 → 문단 */
+  --gap-section: var(--space-7);           /* 절 → 절 */
+  --gap-block: var(--space-5);             /* 블록(표/도형) 위아래 */
+
+  /* --- 레이아웃: 페이지 여백 (전 페이지 동일값 강제) --------------------- */
+  --page-margin-x: var(--space-9);  /* 좌우 */
+  --page-margin-y: var(--space-8);  /* 상하 */
+  --grid-columns: 12;
+  --grid-gutter: var(--space-5);
+  --content-max-width: 1024px;
+
+  /* --- 색상: KRDS 계열 팔레트 (2~3색만 사용, 무지개색 금지) -------------- */
+  /* Primary: 정부 상징색 계열 블루. 강조는 point 1색만. */
+  --color-primary: #256ef4;        /* KRDS primary blue 계열 */
+  --color-primary-strong: #0b50d0;
+  --color-primary-weak: #d8e5ff;
+  --color-point: #f13636;          /* 강조/경고 1색 (남용 금지) */
+
+  /* 중립(텍스트/배경): 회색 계열은 여기서만 선택 */
+  --color-text: #1e2124;           /* 본문 (완전 검정 금지, 살짝 부드럽게) */
+  --color-text-sub: #58616a;       /* 보조 텍스트 */
+  --color-text-disabled: #8a949e;
+  --color-line: #cdd1d5;           /* 구분선/표 테두리 */
+  --color-bg: #ffffff;
+  --color-bg-soft: #f4f5f6;        /* 카드/음영 배경 */
+
+  /* --- 도형/다이어그램 규격 (어긋남 방지) -------------------------------- */
+  --radius-sm: 4px;
+  --radius-md: 8px;
+  --radius-lg: 12px;
+  --border-width: 1px;
+  --shadow-card: 0 1px 4px rgba(0, 0, 0, 0.08);
+  /* 도형 크기/좌표도 8pt 그리드에 스냅. 아이콘은 24/32/40px 3종만. */
+  --icon-sm: 24px;
+  --icon-md: 32px;
+  --icon-lg: 40px;
+}
+
+/* --- 기본 적용 예시 (HTML 산출물용) --------------------------------------- */
+body {
+  font-family: var(--font-sans);
+  font-size: var(--fs-body);
+  line-height: var(--lh-body);
+  letter-spacing: var(--ls-body);
+  color: var(--color-text);
+  background: var(--color-bg);
+}
+h1 { font-size: var(--fs-h1); line-height: var(--lh-heading); letter-spacing: var(--ls-heading); margin: 0 0 var(--gap-heading-to-body); }
+h2 { font-size: var(--fs-h2); line-height: var(--lh-heading); letter-spacing: var(--ls-heading); margin: var(--gap-section) 0 var(--gap-heading-to-body); }
+h3 { font-size: var(--fs-h3); line-height: var(--lh-heading); margin: var(--gap-block) 0 var(--gap-heading-to-body); }
+p  { margin: 0 0 var(--gap-paragraph); }
+.section { margin-bottom: var(--gap-section); }
+.card {
+  background: var(--color-bg-soft);
+  border: var(--border-width) solid var(--color-line);
+  border-radius: var(--radius-md);
+  padding: var(--space-5);
+  box-shadow: var(--shadow-card);
+}
